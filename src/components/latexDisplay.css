@@ -1,0 +1,7 @@
+.latexDisplay{
+    background: black;
+    border: solid grey 5px;
+    color: white;
+    width: 400px;
+    border-radius: 5%;
+}

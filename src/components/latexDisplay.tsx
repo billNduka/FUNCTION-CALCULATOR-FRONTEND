@@ -4,11 +4,12 @@ import "./latexDisplay.css";
 
 type LatexDisplayProps = {
   expression: string;
+  className?: string;
 };
 
-export default function LatexDisplay({ expression }: LatexDisplayProps) {
+export default function LatexDisplay({ className, expression }: LatexDisplayProps) {
   return( 
-    <div className='latexDisplay' style={{ padding: '1rem', border: '1px solid #ccc', borderRadius: '8px' }}>
+    <div className={className ||'latexDisplay'} style={{ }}>
         <TeX math={expression} />
     </div>
     

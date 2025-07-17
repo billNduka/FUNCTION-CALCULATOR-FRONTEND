@@ -1,11 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import LatexDisplay from './components/latexDisplay';
 import SolveButton from './components/SolveButton'
+import Sidebar from './components/sidebar';
+import './index.css'
 
-let difAPIURL: string = "https://function-calculator-backend.onrender.com/api/math/differentiate"
+export const API_URLS = {
+  differentiate: "https://function-calculator-backend.onrender.com/api/math/differentiate",
+  integrate: "https://function-calculator-backend.onrender.com/api/math/integrate"
+}
 
-async function fetchDifferential(expression: string): Promise<string> {
-  const response = await fetch(difAPIURL, {
+export type APIMode = keyof typeof API_URLS;
+
+async function fetchDifferential(expression: string, mode: APIMode): Promise<string> {
+  const response = await fetch(API_URLS[mode], {
     method: 'POST',
     headers: {"content-type": "application/json"},
     body: JSON.stringify({ expression: expression })
@@ -17,31 +24,38 @@ async function fetchDifferential(expression: string): Promise<string> {
 
 function App() {
 
-  const [expression, setExpression] = useState<string>("x^n + y^n")
-  const [result, setResult] = useState<string>("")
+  const [expression, setExpression] = useState<string>("")
+  const [result, setResult] = useState<string>("---")
+  const [mode, setMode] = useState<APIMode>('differentiate');
+
 
   async function handleSolveClick(expression: string){
-    const res = await fetchDifferential(expression);
+    const res = await fetchDifferential(expression, mode);
     setResult(res);
   }
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Function Calculator</h1>
+    <div style={{ display: 'flex' }}>
 
-      <input
-        type="text"
-        value={expression}
-        onChange={(e) => setExpression(e.target.value)}
-        placeholder="Enter LaTeX expression"
-      />
-
-      <h2>Rendered Output:</h2>
-      <div>
-        <LatexDisplay expression={result} />
+      <Sidebar mode={mode} setMode={setMode} options={Object.keys(API_URLS)}/>
+      
+      <div className='window'>  
+        <input
+          type="text"
+          value={expression}
+          onChange={(e) => setExpression(e.target.value)}
+          placeholder="Enter LaTeX expression"
+        />
+        <LatexDisplay className='inputDisplay' expression={expression}/>
       </div>
-      <div>
-        <SolveButton onClick={() => handleSolveClick(expression)} />
+      <div className='window'>
+        <h2>Rendered Output:</h2>
+        <div>
+          <LatexDisplay className='resultDisplay' expression={result} />
+        </div>
+        <div>
+          <SolveButton onClick={() => handleSolveClick(expression)} />
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,10 @@
 .latexDisplay{
-    background: black;
-    border: solid grey 5px;
-    color: white;
-    width: 400px;
-    border-radius: 5%;
+    background-color: black;
+    width: 85%;
+    height: 25%;
+    color: black;
+    font-size: 270%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: solid white 3px;;
+    margin: 15px;
 }

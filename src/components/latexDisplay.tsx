@@ -8,7 +8,7 @@ type LatexDisplayProps = {
 
 export default function LatexDisplay({ expression }: LatexDisplayProps) {
   return( 
-    <div className='latexDisplay'>
+    <div className='latexDisplay' style={{ padding: '1rem', border: '1px solid #ccc', borderRadius: '8px' }}>
         <TeX math={expression} />
     </div>
     

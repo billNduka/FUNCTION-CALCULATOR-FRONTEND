@@ -1,8 +1,11 @@
+.main-content{
+    width: 99%;
+}
 .window{
     background-color: rgb(97, 91, 91);
     border: solid grey 5px;
     color: white;
-    width: 89%;
+    width: 99%;
     height: 400px;
     border-radius: 5%;
 }

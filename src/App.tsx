@@ -8,12 +8,14 @@ import './index.css'
 const API_URLS = {
   differentiate: "https://function-calculator-backend.onrender.com/api/math/differentiate",
   integrate: "https://function-calculator-backend.onrender.com/api/math/integrate",
-  convert_base: "https://function-calculator-backend.onrender.com/api/math/convert/"
+  convert_base: "https://function-calculator-backend.onrender.com/api/math/convert/",
+  expand: "https://function-calculator-backend.onrender.com/api/math/expand"
 }
 export const SAMPLE_EXPRESSIONS = {
   differentiate: "x^3 + 2x^2 - 5x + 7", 
   integrate: "x^3 + 2x^2 - 5x + 7",
-  convert_base: "1010"
+  convert_base: "1010",
+  expand: "(2x+1)^3"
 }
 
 export type APIMode = keyof typeof API_URLS;
@@ -38,6 +40,13 @@ async function fetchBaseConversionSolution(expression: string, fromBase:string, 
   return data.result || "Error: Unable to process the expression";
 }
 
+function mathToLatex(expr: string): string {
+  return expr
+    .replace(/\*/g, '')           // Remove multiplication signs
+    .replace(/(\w)\^(\d+)/g, '$1^{\$2}') // x^3 -> x^{3}
+    .replace(/\+/g, ' + ')        // Add spaces around plus
+    .replace(/-/g, ' - ');        // Add spaces around minus
+}
 
 function App() {
   const [result, setResult] = useState<string>("---")
@@ -56,6 +65,9 @@ function App() {
     }else if(mode === "convert_base"){
       const res = await fetchBaseConversionSolution(expression, fromBase ?? "", toBase ?? "");
       setResult(res);
+    } else if(mode === "expand") {
+      const res = await fetchCalculusSolution(expression, mode);
+      setResult(mathToLatex(res));
     }
   }
 

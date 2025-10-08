@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import "./styles/basePickerDropdown.css"
+=======
+import "./basePickerDropdown.css"
+>>>>>>> origin/main
 
 type BasePickerDropDownProps = {
   fromBase: string;

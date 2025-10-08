@@ -1,28 +1,44 @@
+<<<<<<< HEAD
  import { useActionState, useState } from 'react';
+=======
+import { useState } from 'react';
+>>>>>>> origin/main
 import LatexDisplay from './components/latexDisplay';
 import SolveButton from './components/solveButton'
 import Sidebar from './components/sidebar';
 import BasePickerDropDown from './components/basePickerDropdown';
+<<<<<<< HEAD
 import OrderPickerDropdown from './components/orderPickerDropdown';
+=======
+>>>>>>> origin/main
 import './index.css'
 
 const API_URLS = {
   differentiate: "https://function-calculator-backend.onrender.com/api/math/differentiate",
   integrate: "https://function-calculator-backend.onrender.com/api/math/integrate",
   convert_base: "https://function-calculator-backend.onrender.com/api/math/convert/",
+<<<<<<< HEAD
   expand: "https://function-calculator-backend.onrender.com/api/math/expand",
   find_root: "https://function-calculator-backend.onrender.com/api/math/roots"
+=======
+  expand: "https://function-calculator-backend.onrender.com/api/math/expand"
+>>>>>>> origin/main
 }
 export const SAMPLE_EXPRESSIONS = {
   differentiate: "x^3 + 2x^2 - 5x + 7", 
   integrate: "x^3 + 2x^2 - 5x + 7",
   convert_base: "1010",
+<<<<<<< HEAD
   expand: "(2x+1)^3",
   find_root: "x^3 + 2x^2 - 5x + 7"
+=======
+  expand: "(2x+1)^3"
+>>>>>>> origin/main
 }
 
 export type APIMode = keyof typeof API_URLS;
 
+<<<<<<< HEAD
 async function fetchDerivative(expression: string, order: number): Promise<string> {
   const response = await fetch(API_URLS["differentiate"], {
     method: 'POST',
@@ -43,6 +59,10 @@ async function fetchIntegral(expression: string): Promise<string> {
 };
 async function fetchExpansion(expression: string): Promise<string> {
   const response = await fetch(API_URLS["expand"], {
+=======
+async function fetchCalculusSolution(expression: string, mode: APIMode): Promise<string> {
+  const response = await fetch(API_URLS[mode], {
+>>>>>>> origin/main
     method: 'POST',
     headers: {"content-type": "application/json"},
     body: JSON.stringify({ expression: expression })
@@ -51,7 +71,11 @@ async function fetchExpansion(expression: string): Promise<string> {
   return data.result || "Error: Unable to process the expression";
 };
 
+<<<<<<< HEAD
 async function fetchBaseConversion(expression: string, fromBase:string, toBase:string): Promise<string>{
+=======
+async function fetchBaseConversionSolution(expression: string, fromBase:string, toBase:string): Promise<string>{
+>>>>>>> origin/main
   const response = await fetch(API_URLS["convert_base"] + `${fromBase}-${toBase}`, {
     method: 'POST',
     headers: {"content-type": "application/json"},
@@ -61,6 +85,7 @@ async function fetchBaseConversion(expression: string, fromBase:string, toBase:s
   return data.result || "Error: Unable to process the expression";
 }
 
+<<<<<<< HEAD
 async function fetchRoots(expression: string): Promise<string> {
   const response = await fetch(API_URLS["find_root"], {
     method: 'POST',
@@ -71,6 +96,8 @@ async function fetchRoots(expression: string): Promise<string> {
   return data.result || "Error: Unable to process the expression";
 };
 
+=======
+>>>>>>> origin/main
 function mathToLatex(expr: string): string {
   return expr
     .replace(/\*/g, '')           // Remove multiplication signs
@@ -86,11 +113,15 @@ function App() {
   const [expression, setExpression] = useState<string>(sampleExpression)
   const [fromBase, setFromBase] = useState<string>("2")
   const [toBase, setToBase] = useState<string>("10")
+<<<<<<< HEAD
   const [order, setOrder] = useState<number>(1)
+=======
+>>>>>>> origin/main
   
 
 
   async function handleSolveClick(expression: string, fromBase?:string, toBase?:string){
+<<<<<<< HEAD
     if(mode === "differentiate"){  
       const res = await fetchDerivative(expression, order);
       setResult(res);
@@ -106,6 +137,17 @@ function App() {
     } else if (mode === "find_root"){
       const res = await fetchRoots(expression)
       setResult(res)
+=======
+    if(mode === "differentiate" || mode === "integrate"){  
+      const res = await fetchCalculusSolution(expression, mode);
+      setResult(res);
+    }else if(mode === "convert_base"){
+      const res = await fetchBaseConversionSolution(expression, fromBase ?? "", toBase ?? "");
+      setResult(res);
+    } else if(mode === "expand") {
+      const res = await fetchCalculusSolution(expression, mode);
+      setResult(mathToLatex(res));
+>>>>>>> origin/main
     }
   }
 
@@ -129,7 +171,10 @@ function App() {
             placeholder="Enter LaTeX expression"
           />
           {mode !== "convert_base" && <LatexDisplay className='inputDisplay' expression={expression}/>}
+<<<<<<< HEAD
           {mode == "differentiate" && <OrderPickerDropdown order={order} setOrder={setOrder} />}
+=======
+>>>>>>> origin/main
         </div>
         <div className='window'>
           <h2>Rendered Output:</h2>

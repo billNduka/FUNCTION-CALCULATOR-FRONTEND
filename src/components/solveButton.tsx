@@ -1,5 +1,9 @@
 import React from "react";
+<<<<<<< HEAD
 import "./styles/solveButton.css";
+=======
+import "./solveButton.css";
+>>>>>>> origin/main
 
 type SolveButtonProps = {
     onClick: () => Promise<void>;

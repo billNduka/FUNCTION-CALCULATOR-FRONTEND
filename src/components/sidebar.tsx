@@ -1,6 +1,10 @@
 import type { APIMode } from "../App";
 import { SAMPLE_EXPRESSIONS } from "../App";
+<<<<<<< HEAD
 import "./styles/sidebar.css";
+=======
+import "./sidebar.css";
+>>>>>>> origin/main
 
 type SidebarProps = {
   mode: APIMode;

@@ -2,3 +2,6 @@
     margin-left: '1rem';
     background-color: red;
 }
+.solveBtn:hover{
+    background-color: antiquewhite;
+}

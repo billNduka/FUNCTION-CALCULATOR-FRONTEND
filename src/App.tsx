@@ -18,7 +18,7 @@ export const SAMPLE_EXPRESSIONS = {
   integrate: "x^3 + 2x^2 - 5x + 7",
   convert_base: "1010",
   expand: "(2x+1)^3",
-  find_root: "x^3 + 2x^2 - 5x + 7"
+  find_root: "2x^2 - 5x + 7"
 }
 
 export type APIMode = keyof typeof API_URLS;
@@ -51,7 +51,6 @@ async function fetchExpansion(expression: string): Promise<string> {
   const data = await response.json();
   return data.result || "Error: Unable to process the expression";
 };
-
 async function fetchBaseConversion(expression: string, fromBase:string, toBase:string): Promise<string>{
   const response = await fetch(API_URLS["convert_base"] + `${fromBase}-${toBase}`, {
     method: 'POST',
@@ -61,7 +60,6 @@ async function fetchBaseConversion(expression: string, fromBase:string, toBase:s
   const data = await response.json();
   return data.result || "Error: Unable to process the expression";
 }
-
 async function fetchRoots(expression: string): Promise<string> {
   const response = await fetch(API_URLS["find_root"], {
     method: 'POST',
@@ -69,6 +67,7 @@ async function fetchRoots(expression: string): Promise<string> {
     body: JSON.stringify({ expression: expression })
   })
   const data = await response.json();
+  console.log(data.result)
   return data.result || "Error: Unable to process the expression";
 };
 
@@ -90,7 +89,6 @@ function App() {
   const [order, setOrder] = useState<number>(1)
   
 
-
   async function handleSolveClick(expression: string, fromBase?:string, toBase?:string){
     if(mode === "differentiate"){  
       const res = await fetchDerivative(expression, order);
@@ -106,7 +104,7 @@ function App() {
       setResult(mathToLatex(res));
     } else if (mode === "find_root"){
       const res = await fetchRoots(expression)
-      setResult(res)
+      setResult(mathToLatex(res.toString()))
     }
   }
 

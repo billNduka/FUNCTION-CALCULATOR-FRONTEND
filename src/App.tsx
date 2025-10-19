@@ -1,9 +1,10 @@
- import { useState } from 'react';
+import { useState } from 'react';
 import LatexDisplay from './components/latexDisplay';
 import SolveButton from './components/solveButton'
 import Sidebar from './components/sidebar';
 import BasePickerDropDown from './components/basePickerDropdown';
 import OrderPickerDropdown from './components/orderPickerDropdown';
+import GraphPlot from './components/graphPlot';
 import './index.css'
 
 const API_URLS = {
@@ -11,14 +12,16 @@ const API_URLS = {
   integrate: "https://function-calculator-backend.onrender.com/api/math/integrate",
   convert_base: "https://function-calculator-backend.onrender.com/api/math/convert/",
   expand: "https://function-calculator-backend.onrender.com/api/math/expand",
-  find_root: "https://function-calculator-backend.onrender.com/api/math/roots"
+  find_root: "https://function-calculator-backend.onrender.com/api/math/roots",
+  plot: null
 }
 export const SAMPLE_EXPRESSIONS = {
   differentiate: "x^3 + 2x^2 - 5x + 7", 
   integrate: "x^3 + 2x^2 - 5x + 7",
   convert_base: "1010",
   expand: "(2x+1)^3",
-  find_root: "2x^2 - 5x + 7"
+  find_root: "2x^2 - 5x + 7",
+  plot: "x^2"
 }
 
 export type APIMode = keyof typeof API_URLS;
@@ -121,16 +124,18 @@ function App() {
       
       <div className="main-content">
         <div className='window'>  
-          <input
-            type="text"
-            value={expression}
-            onChange={(e) => setExpression(e.target.value)}
-            placeholder="Enter LaTeX expression"
-          />
-          {mode !== "convert_base" && <LatexDisplay className='inputDisplay' expression={expression}/>}
-          {mode == "differentiate" && <OrderPickerDropdown order={order} setOrder={setOrder} />}
-        </div>
-        <div className='window'>
+          {mode != "plot" ? <>
+            <input
+              type="text"
+              value={expression}
+              onChange={(e) => setExpression(e.target.value)}
+              placeholder="Enter LaTeX expression"
+            />
+            {mode !== "convert_base" && <LatexDisplay className='inputDisplay' expression={expression}/>}
+            {mode == "differentiate" && <OrderPickerDropdown order={order} setOrder={setOrder} />}
+          </> : <GraphPlot expression={expression}/>}
+        </div> 
+        {mode != "plot" && <div className='window'>
           <h2>Rendered Output:</h2>
           <div>
             <LatexDisplay className='resultDisplay' expression={result} />
@@ -146,7 +151,13 @@ function App() {
               />
             )}
           </div>
-        </div>
+        </div>}
+        {mode == "plot" && <input
+              type="text"
+              value={expression}
+              onChange={(e) => setExpression(e.target.value)}
+              placeholder="Enter LaTeX expression"
+            />}
       </div>
     </div>
   );
